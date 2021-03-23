@@ -1,16 +1,13 @@
 package com.timothybreitenfeldt.templator.models;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,24 +18,30 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-public class Project {
+public class ProjectFile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(unique = true)
+    @Column
     @NotNull
-    @Size(min = 1, max = 50)
-    private String name;
+    @Size(min = 3, max = 50)
+    private String filename;
 
-    @Column(nullable = true)
-    @Null
-    @Size(min = 0, max = 150)
-    private String description;
+    @Column
+    @NotNull
+    @Size(min = 3, max = 50)
+    private String pageTitle;
 
-    @OneToMany(mappedBy = "project")
+    @Column
+    @NotNull
+    @Lob
+    private String content;
+
+    @ManyToOne
+    @NotNull
     @JsonIgnore
-    private Set<ProjectFile> projectFiles = new HashSet<>();
+    private Project project;
 
 }
