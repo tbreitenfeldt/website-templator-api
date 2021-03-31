@@ -1,4 +1,4 @@
-package com.timothybreitenfeldt.templator.exceptions;
+package com.timothybreitenfeldt.templator.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

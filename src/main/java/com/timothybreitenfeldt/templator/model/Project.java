@@ -1,4 +1,4 @@
-package com.timothybreitenfeldt.templator.models;
+package com.timothybreitenfeldt.templator.model;
 
 import java.util.HashSet;
 import java.util.Objects;

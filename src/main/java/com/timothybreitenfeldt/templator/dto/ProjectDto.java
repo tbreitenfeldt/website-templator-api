@@ -1,4 +1,4 @@
-package com.timothybreitenfeldt.templator.dtos;
+package com.timothybreitenfeldt.templator.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

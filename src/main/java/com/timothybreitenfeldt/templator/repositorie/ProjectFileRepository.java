@@ -1,11 +1,11 @@
-package com.timothybreitenfeldt.templator.repositories;
+package com.timothybreitenfeldt.templator.repositorie;
 
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.timothybreitenfeldt.templator.models.ProjectFile;
+import com.timothybreitenfeldt.templator.model.ProjectFile;
 
 @Repository
 public interface ProjectFileRepository extends JpaRepository<ProjectFile, Integer> {

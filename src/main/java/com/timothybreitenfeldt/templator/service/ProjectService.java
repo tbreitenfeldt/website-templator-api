@@ -1,4 +1,4 @@
-package com.timothybreitenfeldt.templator.services;
+package com.timothybreitenfeldt.templator.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -6,14 +6,14 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.timothybreitenfeldt.templator.dtos.ProjectDto;
-import com.timothybreitenfeldt.templator.exceptions.ArgumentMissingException;
-import com.timothybreitenfeldt.templator.exceptions.InvalidArgumentException;
-import com.timothybreitenfeldt.templator.exceptions.MissingRequestBodyException;
-import com.timothybreitenfeldt.templator.exceptions.ProjectAlreadyExistsException;
-import com.timothybreitenfeldt.templator.mappers.ProjectModelDtoMapper;
-import com.timothybreitenfeldt.templator.models.Project;
-import com.timothybreitenfeldt.templator.repositories.ProjectRepository;
+import com.timothybreitenfeldt.templator.dto.ProjectDto;
+import com.timothybreitenfeldt.templator.exception.ArgumentMissingException;
+import com.timothybreitenfeldt.templator.exception.InvalidArgumentException;
+import com.timothybreitenfeldt.templator.exception.MissingRequestBodyException;
+import com.timothybreitenfeldt.templator.exception.ProjectAlreadyExistsException;
+import com.timothybreitenfeldt.templator.mapper.ProjectModelDtoMapper;
+import com.timothybreitenfeldt.templator.model.Project;
+import com.timothybreitenfeldt.templator.repositorie.ProjectRepository;
 
 @Service
 public class ProjectService {

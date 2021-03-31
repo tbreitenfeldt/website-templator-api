@@ -1,4 +1,4 @@
-package com.timothybreitenfeldt.templator.services;
+package com.timothybreitenfeldt.templator.service;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -12,18 +12,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.timothybreitenfeldt.templator.dtos.ProjectFileDto;
-import com.timothybreitenfeldt.templator.exceptions.ArgumentMissingException;
-import com.timothybreitenfeldt.templator.exceptions.DeletingFileException;
-import com.timothybreitenfeldt.templator.exceptions.InvalidArgumentException;
-import com.timothybreitenfeldt.templator.exceptions.MissingRequestBodyException;
-import com.timothybreitenfeldt.templator.exceptions.ProjectFileAlreadyExistsException;
-import com.timothybreitenfeldt.templator.exceptions.WritingToFileException;
-import com.timothybreitenfeldt.templator.mappers.ProjectFileModelDtoMapper;
-import com.timothybreitenfeldt.templator.models.Project;
-import com.timothybreitenfeldt.templator.models.ProjectFile;
-import com.timothybreitenfeldt.templator.repositories.ProjectFileRepository;
-import com.timothybreitenfeldt.templator.repositories.ProjectRepository;
+import com.timothybreitenfeldt.templator.dto.ProjectFileDto;
+import com.timothybreitenfeldt.templator.exception.ArgumentMissingException;
+import com.timothybreitenfeldt.templator.exception.DeletingFileException;
+import com.timothybreitenfeldt.templator.exception.InvalidArgumentException;
+import com.timothybreitenfeldt.templator.exception.MissingRequestBodyException;
+import com.timothybreitenfeldt.templator.exception.ProjectFileAlreadyExistsException;
+import com.timothybreitenfeldt.templator.exception.WritingToFileException;
+import com.timothybreitenfeldt.templator.mapper.ProjectFileModelDtoMapper;
+import com.timothybreitenfeldt.templator.model.Project;
+import com.timothybreitenfeldt.templator.model.ProjectFile;
+import com.timothybreitenfeldt.templator.repositorie.ProjectFileRepository;
+import com.timothybreitenfeldt.templator.repositorie.ProjectRepository;
 
 @Service
 public class ProjectFileService {
@@ -37,7 +37,7 @@ public class ProjectFileService {
     @Autowired
     private ProjectFileModelDtoMapper projectFileModelDtoMapper;
 
-    @Value("${projects.directory}")
+    @Value("${custom.projects.directory}")
     private String projectsDirectory;
 
     public List<ProjectFileDto> getFilesForProject(Integer projectId) {
