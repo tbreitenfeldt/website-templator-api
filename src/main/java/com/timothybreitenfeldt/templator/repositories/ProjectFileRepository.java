@@ -12,4 +12,6 @@ public interface ProjectFileRepository extends JpaRepository<ProjectFile, Intege
 
     public abstract List<ProjectFile> findAllByProjectId(Integer projectId);
 
+    public abstract boolean existsByFilenameAndProjectId(String filename, Integer projectId);
+
 }

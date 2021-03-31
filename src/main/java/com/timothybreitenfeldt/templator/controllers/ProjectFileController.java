@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.timothybreitenfeldt.templator.dtos.ProjectFileDto;
 import com.timothybreitenfeldt.templator.models.ProjectFile;
 import com.timothybreitenfeldt.templator.services.ProjectFileService;
 
@@ -27,24 +28,24 @@ public class ProjectFileController {
     private ProjectFileService projectFileService;
 
     @GetMapping("/{projectId}/files")
-    public ResponseEntity<List<ProjectFile>> getFilesForProject(@PathVariable Integer projectId) {
-        List<ProjectFile> projectFiles = this.projectFileService.getFilesForProject(projectId);
+    public ResponseEntity<List<ProjectFileDto>> getFilesForProject(@PathVariable Integer projectId) {
+        List<ProjectFileDto> projectFiles = this.projectFileService.getFilesForProject(projectId);
         return new ResponseEntity<>(projectFiles, HttpStatus.OK);
     }
 
     @PostMapping("/file")
-    public ResponseEntity<ProjectFile> createProjectFile(@RequestBody ProjectFile request) {
-        ProjectFile projectFile = this.projectFileService.createProjectFile(request);
+    public ResponseEntity<ProjectFileDto> createProjectFile(@RequestBody ProjectFileDto request) {
+        ProjectFileDto projectFile = this.projectFileService.createProjectFile(request);
         return new ResponseEntity<>(projectFile, HttpStatus.CREATED);
     }
 
     @PutMapping("/file")
-    public ResponseEntity<ProjectFile> updateProjectFile(@RequestBody ProjectFile request) {
+    public ResponseEntity<ProjectFileDto> updateProjectFile(@RequestBody ProjectFileDto request) {
         this.projectFileService.updateProjectFile(request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping("/file/{id}")
+    @DeleteMapping("/files/{id}")
     public ResponseEntity<ProjectFile> deleteProjectFile(@PathVariable Integer id) {
         this.projectFileService.deleteProjectFile(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
