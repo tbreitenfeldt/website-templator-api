@@ -1,6 +1,6 @@
 package com.timothybreitenfeldt.templator.dto;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,8 +15,8 @@ public class ProjectFileDto {
     private String filename;
     private String pageTitle;
     private String content;
-    private LocalDateTime createdOn;
-    private LocalDateTime updatedOn;
+    private ZonedDateTime createdOn;
+    private ZonedDateTime updatedOn;
     private Integer projectId;
 
 }

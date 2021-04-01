@@ -1,6 +1,6 @@
 package com.timothybreitenfeldt.templator.model;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -15,8 +15,6 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
-import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,12 +49,10 @@ public class ProjectFile {
     private String content;
 
     @Column(nullable = false, updatable = false)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDateTime createdOn;
+    private ZonedDateTime createdOn;
 
     @Column
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    private LocalDateTime updatedOn;
+    private ZonedDateTime updatedOn;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Project project;

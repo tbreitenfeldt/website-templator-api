@@ -1,4 +1,4 @@
-package com.timothybreitenfeldt.templator.repositorie;
+package com.timothybreitenfeldt.templator.repository;
 
 import java.util.Optional;
 

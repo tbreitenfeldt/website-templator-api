@@ -13,7 +13,7 @@ import com.timothybreitenfeldt.templator.exception.MissingRequestBodyException;
 import com.timothybreitenfeldt.templator.exception.ProjectAlreadyExistsException;
 import com.timothybreitenfeldt.templator.mapper.ProjectModelDtoMapper;
 import com.timothybreitenfeldt.templator.model.Project;
-import com.timothybreitenfeldt.templator.repositorie.ProjectRepository;
+import com.timothybreitenfeldt.templator.repository.ProjectRepository;
 
 @Service
 public class ProjectService {

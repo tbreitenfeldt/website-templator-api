@@ -4,7 +4,8 @@ import java.io.File;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,8 +23,8 @@ import com.timothybreitenfeldt.templator.exception.WritingToFileException;
 import com.timothybreitenfeldt.templator.mapper.ProjectFileModelDtoMapper;
 import com.timothybreitenfeldt.templator.model.Project;
 import com.timothybreitenfeldt.templator.model.ProjectFile;
-import com.timothybreitenfeldt.templator.repositorie.ProjectFileRepository;
-import com.timothybreitenfeldt.templator.repositorie.ProjectRepository;
+import com.timothybreitenfeldt.templator.repository.ProjectFileRepository;
+import com.timothybreitenfeldt.templator.repository.ProjectRepository;
 
 @Service
 public class ProjectFileService {
@@ -36,6 +37,9 @@ public class ProjectFileService {
 
     @Autowired
     private ProjectFileModelDtoMapper projectFileModelDtoMapper;
+
+    @Value("${custom.timezone}")
+    private String timezone;
 
     @Value("${custom.projects.directory}")
     private String projectsDirectory;
@@ -84,7 +88,7 @@ public class ProjectFileService {
         projectFileDto.setUpdatedOn(null);
 
         ProjectFile projectFileModel = this.projectFileModelDtoMapper.projectFileDtoToProjectFileModel(projectFileDto);
-        LocalDateTime createdOn = LocalDateTime.now();
+        ZonedDateTime createdOn = ZonedDateTime.now(ZoneId.of(this.timezone));
         projectFileModel.setCreatedOn(createdOn);
         ProjectFile projectFileModelResult = this.projectFileRepository.save(projectFileModel);
         ProjectFileDto projectFileDtoResult = this.projectFileModelDtoMapper
@@ -108,7 +112,7 @@ public class ProjectFileService {
                 () -> new InvalidArgumentException("Unable to find project file with id of " + projectFileDto.getId()));
 
         this.projectFileModelDtoMapper.updateProjectFileModelFromDto(projectFileDto, projectFileModel);
-        LocalDateTime updatedOn = LocalDateTime.now();
+        ZonedDateTime updatedOn = ZonedDateTime.now(ZoneId.of(this.timezone));
         projectFileModel.setUpdatedOn(updatedOn);
         this.projectFileRepository.save(projectFileModel);
     }
