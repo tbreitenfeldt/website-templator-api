@@ -69,7 +69,7 @@ public class ProjectFileService {
         if (projectFileDto.getPageTitle() == null || projectFileDto.getPageTitle().isEmpty()) {
             throw new InvalidArgumentException("Missing pageTitle.");
         }
-        if (projectFileDto.getContent() == null || projectFileDto.getContent().isEmpty()) {
+        if (projectFileDto.getContent() == null) {
             throw new InvalidArgumentException("Missing content.");
         }
         if (projectFileDto.getProjectId() == null) {
