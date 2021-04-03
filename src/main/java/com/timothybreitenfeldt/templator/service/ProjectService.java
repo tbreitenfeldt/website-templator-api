@@ -60,7 +60,7 @@ public class ProjectService {
         return projectDtoResult;
     }
 
-    public void updateProject(ProjectDto projectDto) {
+    public ProjectDto updateProject(ProjectDto projectDto) {
         if (projectDto == null) {
             throw new MissingRequestBodyException("project cannot be null.");
         }
@@ -78,7 +78,9 @@ public class ProjectService {
         }
 
         this.projectModelDtoMapper.updateProjectModelFromDto(projectDto, projectModel);
-        this.projectRepository.save(projectModel);
+        Project projectModelResult = this.projectRepository.save(projectModel);
+        ProjectDto projectDtoResult = this.projectModelDtoMapper.projectModelToProjectDto(projectModelResult);
+        return projectDtoResult;
     }
 
     public void deleteProject(Integer id) {

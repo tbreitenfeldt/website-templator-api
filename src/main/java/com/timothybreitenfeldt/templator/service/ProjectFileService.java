@@ -96,7 +96,7 @@ public class ProjectFileService {
         return projectFileDtoResult;
     }
 
-    public void updateProjectFile(ProjectFileDto projectFileDto) {
+    public ProjectFileDto updateProjectFile(ProjectFileDto projectFileDto) {
         if (projectFileDto == null) {
             throw new MissingRequestBodyException("Missing request body for project file.");
         }
@@ -114,7 +114,10 @@ public class ProjectFileService {
         this.projectFileModelDtoMapper.updateProjectFileModelFromDto(projectFileDto, projectFileModel);
         ZonedDateTime updatedOn = ZonedDateTime.now(ZoneId.of(this.timezone));
         projectFileModel.setUpdatedOn(updatedOn);
-        this.projectFileRepository.save(projectFileModel);
+        ProjectFile projectFileModelResult = this.projectFileRepository.save(projectFileModel);
+        ProjectFileDto projectFileDtoResult = this.projectFileModelDtoMapper
+                .projectFileModelToProjectFileDto(projectFileModelResult);
+        return projectFileDtoResult;
     }
 
     public void deleteProjectFile(Integer id) {

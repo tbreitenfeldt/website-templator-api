@@ -39,8 +39,8 @@ public class ProjectFileController {
 
     @PutMapping("/file")
     public ResponseEntity<ProjectFileDto> updateProjectFile(@RequestBody ProjectFileDto request) {
-        this.projectFileService.updateProjectFile(request);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        ProjectFileDto projectFile = this.projectFileService.updateProjectFile(request);
+        return new ResponseEntity<>(projectFile, HttpStatus.OK);
     }
 
     @DeleteMapping("/files/{id}")

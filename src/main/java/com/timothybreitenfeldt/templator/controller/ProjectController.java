@@ -44,8 +44,8 @@ public class ProjectController {
 
     @PutMapping
     public ResponseEntity<ProjectDto> updateProject(@RequestBody ProjectDto request) {
-        this.projectService.updateProject(request);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        ProjectDto project = this.projectService.updateProject(request);
+        return new ResponseEntity<>(project, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
