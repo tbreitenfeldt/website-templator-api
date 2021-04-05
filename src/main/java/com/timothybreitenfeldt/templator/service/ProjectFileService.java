@@ -53,10 +53,34 @@ public class ProjectFileService {
         }
 
         List<ProjectFile> projectFileModels = this.projectFileRepository.findAllByProjectId(projectId);
-        List<ProjectFileDto> projectFiles = projectFileModels.stream()
-                .map(model -> this.projectFileModelDtoMapper.projectFileModelToProjectFileDto(model))
-                .collect(Collectors.toList());
+        Project project = this.projectRepository.findById(projectId).get();
+        final String projectName = project.getName();
+
+        List<ProjectFileDto> projectFiles = projectFileModels.stream().map(model -> {
+            ProjectFileDto dto = this.projectFileModelDtoMapper.projectFileModelToProjectFileDto(model);
+            boolean isPublished = this.isFilePublished(projectName, dto.getFilename());
+            dto.setPublished(isPublished);
+            return dto;
+        }).collect(Collectors.toList());
+
         return projectFiles;
+    }
+
+    public ProjectFileDto getProjectFile(Integer id) {
+        if (id == null) {
+            throw new ArgumentMissingException("Missing id");
+        }
+
+        ProjectFile projectFileModel = this.projectFileRepository.findById(id)
+                .orElseThrow(() -> new InvalidArgumentException("Unable to find project file with id of " + id));
+        Integer projectId = projectFileModel.getProject().getId();
+        Project project = this.projectRepository.findById(projectId).get();
+        final String projectName = project.getName();
+        ProjectFileDto projectFileDto = this.projectFileModelDtoMapper
+                .projectFileModelToProjectFileDto(projectFileModel);
+        boolean isPublished = this.isFilePublished(projectName, projectFileDto.getFilename());
+        projectFileDto.setPublished(isPublished);
+        return projectFileDto;
     }
 
     public ProjectFileDto createProjectFile(ProjectFileDto projectFileDto) {
@@ -91,8 +115,13 @@ public class ProjectFileService {
         ZonedDateTime createdOn = ZonedDateTime.now(ZoneId.of(this.timezone));
         projectFileModel.setCreatedOn(createdOn);
         ProjectFile projectFileModelResult = this.projectFileRepository.save(projectFileModel);
+        Integer projectId = projectFileModelResult.getProject().getId();
+        Project project = this.projectRepository.findById(projectId).get();
+        final String projectName = project.getName();
         ProjectFileDto projectFileDtoResult = this.projectFileModelDtoMapper
                 .projectFileModelToProjectFileDto(projectFileModelResult);
+        boolean isPublished = this.isFilePublished(projectName, projectFileDto.getFilename());
+        projectFileDtoResult.setPublished(isPublished);
         return projectFileDtoResult;
     }
 
@@ -115,8 +144,13 @@ public class ProjectFileService {
         ZonedDateTime updatedOn = ZonedDateTime.now(ZoneId.of(this.timezone));
         projectFileModel.setUpdatedOn(updatedOn);
         ProjectFile projectFileModelResult = this.projectFileRepository.save(projectFileModel);
+        Integer projectId = projectFileModelResult.getProject().getId();
+        Project project = this.projectRepository.findById(projectId).get();
+        final String projectName = project.getName();
         ProjectFileDto projectFileDtoResult = this.projectFileModelDtoMapper
                 .projectFileModelToProjectFileDto(projectFileModelResult);
+        boolean isPublished = this.isFilePublished(projectName, projectFileDto.getFilename());
+        projectFileDtoResult.setPublished(isPublished);
         return projectFileDtoResult;
     }
 
@@ -157,6 +191,7 @@ public class ProjectFileService {
                 projectDirectory.mkdir();
             }
             if (file.exists()) {
+                file.delete();
                 file.createNewFile();
             }
 
@@ -188,6 +223,12 @@ public class ProjectFileService {
         } catch (Exception e) {
             throw new DeletingFileException(e.getMessage());
         }
+    }
+
+    private boolean isFilePublished(String projectName, String filename) {
+        Path filePath = Paths.get(this.projectsDirectory).resolve(projectName).resolve(filename);
+        File file = filePath.toFile();
+        return file.exists();
     }
 
 }

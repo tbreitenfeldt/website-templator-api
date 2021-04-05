@@ -13,6 +13,7 @@ import com.timothybreitenfeldt.templator.model.ProjectFile;
 public interface ProjectFileModelDtoMapper {
 
     @Mapping(target = "projectId", source = "project.id")
+    @Mapping(target = "published", ignore = true)
     public abstract ProjectFileDto projectFileModelToProjectFileDto(ProjectFile model);
 
     @Mapping(target = "project.id", source = "projectId")

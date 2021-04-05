@@ -31,6 +31,12 @@ public class ProjectFileController {
         return new ResponseEntity<>(projectFiles, HttpStatus.OK);
     }
 
+    @GetMapping("/files/{id}")
+    public ResponseEntity<ProjectFileDto> getProjectFile(@PathVariable Integer id) {
+        ProjectFileDto projectFile = this.projectFileService.getProjectFile(id);
+        return new ResponseEntity<>(projectFile, HttpStatus.OK);
+    }
+
     @PostMapping("/file")
     public ResponseEntity<ProjectFileDto> createProjectFile(@RequestBody ProjectFileDto request) {
         ProjectFileDto projectFile = this.projectFileService.createProjectFile(request);
@@ -49,13 +55,13 @@ public class ProjectFileController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/file/{id}/publish")
+    @GetMapping("/files/{id}/publish")
     public ResponseEntity<ProjectFile> publishProjectFile(@PathVariable Integer id) {
         this.projectFileService.publishProjectFile(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/file/{id}/unpublish")
+    @GetMapping("/files/{id}/unpublish")
     public ResponseEntity<ProjectFile> unpublishProjectFile(@PathVariable Integer id) {
         this.projectFileService.unpublishProjectFile(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

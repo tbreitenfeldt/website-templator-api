@@ -17,6 +17,7 @@ public class ProjectFileDto {
     private String content;
     private ZonedDateTime createdOn;
     private ZonedDateTime updatedOn;
+    private boolean published;
     private Integer projectId;
 
 }
