@@ -17,7 +17,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @EnableWebMvc
 public class WebConfig implements WebMvcConfigurer {
 
-    @Value("${custom.cors.url}")
+    @Value("${app.cors.url}")
     private String corsUrl;
 
     @Override

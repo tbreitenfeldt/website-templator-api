@@ -1,13 +1,18 @@
 package com.timothybreitenfeldt.templator.service;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.timothybreitenfeldt.templator.dto.ProjectDto;
 import com.timothybreitenfeldt.templator.exception.ArgumentMissingException;
+import com.timothybreitenfeldt.templator.exception.DeletingFileException;
 import com.timothybreitenfeldt.templator.exception.InvalidArgumentException;
 import com.timothybreitenfeldt.templator.exception.MissingRequestBodyException;
 import com.timothybreitenfeldt.templator.exception.ProjectAlreadyExistsException;
@@ -23,6 +28,9 @@ public class ProjectService {
 
     @Autowired
     private ProjectModelDtoMapper projectModelDtoMapper;
+
+    @Value("${app.projects.directory}")
+    private String projectsDirectory;
 
     public List<ProjectDto> getProjects() {
         List<Project> projectModels = this.projectRepository.findAll();
@@ -89,6 +97,26 @@ public class ProjectService {
         }
         if (!this.projectRepository.existsById(id)) {
             throw new InvalidArgumentException("Unable to find project with ID " + id);
+        }
+
+        Project project = this.projectRepository.findById(id).get();
+
+        try {
+            Path projectFilePath = Paths.get(this.projectsDirectory).resolve(project.getName());
+            File fo = projectFilePath.toFile();
+            String[] files = fo.list();
+
+            if (files != null) {
+                for (String file : files) {
+                    File currentFile = new File(fo.getPath(), file);
+                    currentFile.delete();
+                }
+            }
+
+            fo.delete();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new DeletingFileException(e.getMessage());
         }
 
         this.projectRepository.deleteById(id);

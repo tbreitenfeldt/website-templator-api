@@ -38,10 +38,10 @@ public class ProjectFileService {
     @Autowired
     private ProjectFileModelDtoMapper projectFileModelDtoMapper;
 
-    @Value("${custom.timezone}")
+    @Value("${app.timezone}")
     private String timezone;
 
-    @Value("${custom.projects.directory}")
+    @Value("${app.projects.directory}")
     private String projectsDirectory;
 
     public List<ProjectFileDto> getFilesForProject(Integer projectId) {
@@ -120,7 +120,7 @@ public class ProjectFileService {
         final String projectName = project.getName();
         ProjectFileDto projectFileDtoResult = this.projectFileModelDtoMapper
                 .projectFileModelToProjectFileDto(projectFileModelResult);
-        boolean isPublished = this.isFilePublished(projectName, projectFileDto.getFilename());
+        boolean isPublished = this.isFilePublished(projectName, projectFileDtoResult.getFilename());
         projectFileDtoResult.setPublished(isPublished);
         return projectFileDtoResult;
     }
@@ -149,7 +149,7 @@ public class ProjectFileService {
         final String projectName = project.getName();
         ProjectFileDto projectFileDtoResult = this.projectFileModelDtoMapper
                 .projectFileModelToProjectFileDto(projectFileModelResult);
-        boolean isPublished = this.isFilePublished(projectName, projectFileDto.getFilename());
+        boolean isPublished = this.isFilePublished(projectName, projectFileDtoResult.getFilename());
         projectFileDtoResult.setPublished(isPublished);
         return projectFileDtoResult;
     }
@@ -162,6 +162,7 @@ public class ProjectFileService {
             throw new InvalidArgumentException("Unable to find project file with id of " + id);
         }
 
+        this.unpublishProjectFile(id);
         this.projectFileRepository.deleteById(id);
     }
 
@@ -175,6 +176,12 @@ public class ProjectFileService {
         Project project = this.projectRepository.findById(projectFile.getProject().getId())
                 .orElseThrow(() -> new InvalidArgumentException(
                         "Unable to find project with the ID " + projectFile.getProject().getId()));
+
+        final String content = "<!doctype html>\n" + "<html lang=\"en\">\n" + "<head>\n"
+                + "  <meta charset=\"utf-8\" />\n"
+                + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n" + "  <title>"
+                + projectFile.getPageTitle() + "</title>\n" + "</head>\n" + "<body>\n" + projectFile.getContent() + "\n"
+                + "</body>\n" + "</html>";
 
         try {
             Path mainProjectDirectoryPath = Paths.get(this.projectsDirectory);
@@ -196,7 +203,7 @@ public class ProjectFileService {
             }
 
             PrintStream fout = new PrintStream(file);
-            fout.println(projectFile.getContent());
+            fout.println(content);
             fout.flush();
             fout.close();
         } catch (Exception e) {
@@ -226,6 +233,13 @@ public class ProjectFileService {
     }
 
     private boolean isFilePublished(String projectName, String filename) {
+        if (projectName == null) {
+            throw new IllegalArgumentException("projectName cannot be null.");
+        }
+        if (filename == null) {
+            throw new IllegalArgumentException("filename cannot be null");
+        }
+
         Path filePath = Paths.get(this.projectsDirectory).resolve(projectName).resolve(filename);
         File file = filePath.toFile();
         return file.exists();
